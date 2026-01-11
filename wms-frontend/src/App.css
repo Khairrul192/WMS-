@@ -1,0 +1,267 @@
+/* --- Global Styles --- */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #f8fafc;
+}
+
+/* --- Login Page --- */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f2f5;
+}
+
+.login-card {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  width: 350px;
+  text-align: center;
+}
+
+/* --- Main Layout --- */
+.main-layout {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 260px;
+  background-color: #1e293b;
+  color: white;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #334155;
+  margin-bottom: 20px;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  flex-grow: 1;
+}
+
+.sidebar-menu li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #94a3b8;
+  transition: 0.2s;
+}
+
+.sidebar-menu li.active {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.logout-btn-sidebar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* --- Content Area --- */
+.content-area {
+  flex-grow: 1;
+  padding: 40px;
+  overflow-y: auto;
+}
+
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+/* Container to hold them side-by-side */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Tight spacing between them */
+}
+
+/* A much smaller, compact search bar */
+.search-container-small {
+  display: flex;
+  align-items: center;
+  background: #f1f5f9;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  width: 150px; /* Force it to be small */
+  height: 32px;
+}
+
+.search-container-small input {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 13px;
+  width: 100%;
+  margin-left: 5px;
+  padding: 0;
+}
+
+/* Matching the refresh button height */
+.refresh-btn-small {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  padding: 0 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  height: 32px;
+  font-size: 13px;
+  color: #475569;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.refresh-btn-small:hover {
+  background-color: #f8fafc;
+}
+
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.refresh-btn {
+  height: 34px; 
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  padding: 0 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.refresh-btn:hover {
+  background-color: #e2e8f0;
+}
+
+/* --- Inventory Grid --- */
+.inventory-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 24px;
+}
+
+.add-item-card, .item-list-card {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.save-btn, .login-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+tbody tr:hover {
+  background-color: #f8fafc;
+  transition: background-color 0.2s;
+}
+
+/* Styling for the Register Button */
+.reg-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #64748b; 
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 12px; /*  space between Login and Register */
+  transition: background 0.2s ease;
+}
+
+.reg-btn:hover {
+  background-color: #475569; /* Darker gray on hover */
+}
+
+/* Ensure the login-btn also has consistent margin */
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+  padding: 12px;
+  background-color: #f8fafc;
+  border-bottom: 2px solid #e2e8f0;
+  color: #64748b;
+}
+
+td {
+  padding: 16px 12px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.id-badge {
+  background: #f1f5f9;
+  padding: 4px 8px;
+  border-radius: 6px;
+  color: #64748b;
+}
