@@ -1,267 +1,326 @@
-/* --- Global Styles --- */
+/* --- Global Reset --- */
 body, html {
   margin: 0;
   padding: 0;
   font-family: 'Inter', sans-serif;
   background-color: #f8fafc;
+  color: #1e293b;
 }
 
-/* --- Login Page --- */
+/* --- Login Page Restoration --- */
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f0f2f5;
+  background-color: #f8fafc;
 }
 
 .login-card {
   background: white;
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-  width: 350px;
+  padding: 48px 40px;
+  border-radius: 16px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
   text-align: center;
 }
 
-/* --- Main Layout --- */
-.main-layout {
-  display: flex;
-  height: 100vh;
+.login-card h2 {
+  margin-bottom: 32px;
+  font-size: 24px;
+  font-weight: 700;
 }
 
+.login-card input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background-color: #f1f5f9;
+  box-sizing: border-box; /* Fixes the horizontal squashing */
+}
+
+.login-btn, .reg-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  border: none;
+  margin-top: 10px;
+}
+
+.login-btn { background: #3b82f6; color: white; }
+.reg-btn { background: #64748b; color: white; }
+
+/* --- Sidebar Restoration (Fixed to Left) --- */
 .sidebar {
   width: 260px;
+  height: 100vh;
   background-color: #1e293b;
   color: white;
-  padding: 24px;
   display: flex;
   flex-direction: column;
+  padding: 1.5rem 1rem;
+  box-sizing: border-box;
+  position: fixed; /* Keeps it on the left */
+  left: 0;
+  top: 0;
 }
+
+.sidebar-top { flex-grow: 1; }
 
 .sidebar-brand {
   display: flex;
   align-items: center;
-  padding-bottom: 20px;
+  gap: 12px;
+  padding-bottom: 2rem;
   border-bottom: 1px solid #334155;
-  margin-bottom: 20px;
+  margin-bottom: 1.5rem;
 }
 
 .sidebar-menu {
   list-style: none;
   padding: 0;
-  flex-grow: 1;
+  margin: 0;
 }
 
-.sidebar-menu li {
+.sidebar-menu li a {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px;
-  margin-bottom: 8px;
-  border-radius: 8px;
-  cursor: pointer;
+  gap: 14px;
+  padding: 12px 16px;
   color: #94a3b8;
+  text-decoration: none;
+  border-radius: 8px;
   transition: 0.2s;
 }
 
-.sidebar-menu li.active {
-  background-color: #3b82f6;
+.sidebar-menu li.active a {
+  background-color: #3b82f6; /* Blue highlight */
   color: white;
 }
 
+.sidebar-footer {
+  padding-top: 1.5rem;
+  border-top: 1px solid #334155;
+}
+
 .logout-btn-sidebar {
+  width: 100%;
+  background: #ef4444; /* Red button */
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background-color: #ef4444;
-  color: white;
-  border: none;
-  padding: 12px;
-  border-radius: 8px;
-  cursor: pointer;
 }
 
-/* --- Content Area --- */
+/* --- Content Area Fix (Prevents Overlap) --- */
 .content-area {
-  flex-grow: 1;
+  margin-left: 260px; /* Forces content to stay right of sidebar */
   padding: 40px;
-  overflow-y: auto;
+  background-color: #f8fafc;
+  min-height: 100vh;
 }
 
-.content-header {
+/* --- Table Header & Search --- */
+.table-header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 30px;
 }
 
-/* Container to hold them side-by-side */
-.header-actions {
+.table-header-actions {
   display: flex;
   align-items: center;
-  gap: 8px; /* Tight spacing between them */
+  gap: 15px;
 }
 
-/* A much smaller, compact search bar */
-.search-container-small {
-  display: flex;
-  align-items: center;
-  background: #f1f5f9;
-  padding: 4px 10px;
-  border-radius: 6px;
+.search-wrapper {
+  position: relative;
+  width: 350px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 12px 12px 40px; /* Space for icon */
   border: 1px solid #e2e8f0;
-  width: 150px; /* Force it to be small */
-  height: 32px;
-}
-
-.search-container-small input {
-  background: transparent;
-  border: none;
+  border-radius: 8px;
   outline: none;
-  font-size: 13px;
-  width: 100%;
-  margin-left: 5px;
-  padding: 0;
 }
 
-/* Matching the refresh button height */
-.refresh-btn-small {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background-color: white;
-  border: 1px solid #e2e8f0;
-  padding: 0 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  height: 32px;
-  font-size: 13px;
-  color: #475569;
-  font-weight: 500;
-  white-space: nowrap;
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
 }
 
-.refresh-btn-small:hover {
-  background-color: #f8fafc;
-}
-
-
-.list-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-}
-
-.refresh-btn {
-  height: 34px; 
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background-color: #f1f5f9;
-  border: 1px solid #e2e8f0;
-  padding: 0 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.refresh-btn:hover {
-  background-color: #e2e8f0;
-}
-
-/* --- Inventory Grid --- */
-.inventory-grid {
-  display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: 24px;
-}
-
-.add-item-card, .item-list-card {
-  background: white;
-  padding: 24px;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-}
-
-input {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  box-sizing: border-box;
-}
-
-.save-btn, .login-btn {
-  width: 100%;
-  padding: 12px;
-  background-color: #3b82f6;
+.add-stock-btn {
+  background: #3b82f6;
   color: white;
-  border: none;
+  padding: 12px 20px;
   border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-tbody tr:hover {
-  background-color: #f8fafc;
-  transition: background-color 0.2s;
-}
-
-/* Styling for the Register Button */
-.reg-btn {
-  width: 100%;
-  padding: 12px;
-  background-color: #64748b; 
-  color: white;
   border: none;
-  border-radius: 8px;
-  cursor: pointer;
   font-weight: 600;
-  margin-top: 12px; /*  space between Login and Register */
-  transition: background 0.2s ease;
-}
-
-.reg-btn:hover {
-  background-color: #475569; /* Darker gray on hover */
-}
-
-/* Ensure the login-btn also has consistent margin */
-.login-btn {
-  width: 100%;
-  padding: 12px;
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 8px;
   cursor: pointer;
-  font-weight: 600;
-  transition: background 0.2s;
+  white-space: nowrap; /* Prevents button squashing */
 }
 
+/* --- Table Styling Restoration --- */
 table {
   width: 100%;
   border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 th {
+  background: #f8fafc;
+  padding: 16px;
   text-align: left;
-  padding: 12px;
-  background-color: #f8fafc;
-  border-bottom: 2px solid #e2e8f0;
   color: #64748b;
+  font-size: 13px;
+  text-transform: uppercase;
 }
 
 td {
-  padding: 16px 12px;
+  padding: 16px;
   border-bottom: 1px solid #f1f5f9;
+  font-size: 14px;
 }
 
-.id-badge {
-  background: #f1f5f9;
-  padding: 4px 8px;
-  border-radius: 6px;
-  color: #64748b;
+/* Status Pills */
+.status-pill {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.in-stock { background: #dcfce7; color: #166534; }
+.out-stock { background: #fee2e2; color: #991b1b; }
+
+/* --- Form Design Restoration --- */
+.form-container {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  max-width: 600px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group input, .form-group select {
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/*add item button*/
+/* Container for the buttons to sit side-by-side */
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+/* Base styles for both buttons */
+.formsave-btn, .formcancel-btn {
+  flex: 1; /* Makes both buttons equal width */
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Save Button - Matching your Sidebar blue */
+.formsave-btn {
+  background-color: #3b82f6;
+  color: white;
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+}
+
+.formsave-btn:hover {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+}
+
+/* Cancel Button - Matching your Logout red */
+.formcancel-btn {
+  background-color: #f1f5f9; /* Light grey background */
+  color: #475569; /* Darker grey text */
+  border: 1px solid #e2e8f0;
+}
+
+.formcancel-btn:hover {
+  background-color: #fee2e2; /* Turns light red on hover */
+  color: #ef4444;
+  border-color: #fecaca;
+}
+
+/*side bar side menu*/
+/* Submenu Styling */
+.sidebar-menu li.has-submenu .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    color: #94a3b8;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: 0.2s;
+}
+
+.sidebar-menu li.has-submenu .menu-item:hover {
+    background-color: #334155;
+    color: white;
+}
+
+.submenu {
+    list-style: none;
+    padding-left: 48px; /* Indent sub-items */
+    margin: 4px 0;
+    display: none; /* Hidden by default */
+}
+
+.has-submenu.open .submenu {
+    display: block; /* Show when parent is clicked */
+}
+
+.submenu li a {
+    padding: 8px 12px !important;
+    font-size: 13px !important;
+    color: #64748b !important;
+}
+
+.submenu li.active a {
+    color: #3b82f6 !important;
+    background: transparent !important; /* Don't highlight the whole row for sub-items */
+    font-weight: 600;
 }

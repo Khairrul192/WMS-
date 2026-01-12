@@ -8,6 +8,7 @@ public class order {
     @Id
     private String order_id;
     private String order_number;
+    private String order_type;
     private String status;
     private LocalDate order_date;
     private String itemCode;
@@ -20,6 +21,9 @@ public class order {
     // Getters and Setters
     public String getOrder_id() { return order_id; }
     public void setOrder_id(String order_id) { this.order_id = order_id; }
+
+    public String getOrder_type() { return order_type;}
+    public void setOrder_type(String order_type) {this.order_type = order_type;}
 
     public String getOrder_number() { return order_number; }
     public void setOrder_number(String order_number) { this.order_number = order_number; }

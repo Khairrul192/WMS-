@@ -1,146 +1,205 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import ItemRegForm from './ItemRegForm'; 
 import axios from 'axios';
-import { LayoutDashboard, Package, ShoppingCart, BarChart3, Settings, LogOut, RefreshCw, Search } from 'lucide-react';
+import { 
+  LayoutDashboard, 
+  ArrowUpRight, 
+  ArrowDownLeft, 
+  Database, 
+  MapPin, 
+  Users, 
+  UserCircle, 
+  History,
+  Package, 
+  LogOut, 
+  Search 
+} from 'lucide-react';
 
 // --- SUB-COMPONENT: Inventory Table Page ---
-const InventoryTable = ({ items, searchTerm, setSearchTerm, fetchItems }) => (
-  <>
-    <header className="content-header">
-      <div className="header-title">
-        <h2>Inventory Management</h2>
-        <button className="refresh-btn" onClick={fetchItems}><RefreshCw size={16} /><span>Refresh</span></button>
-        <input 
-            type="text" 
-            placeholder="Search SKU or Name..." 
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)} 
-          />
-      </div>
-      <div className="header-actions">
-        <Link to="/add-item" className="save-btn" style={{ textDecoration: 'none' }}>+ Add Item</Link>
-        
-      </div>
-    </header>
+const InventoryTable = ({ items, searchTerm, setSearchTerm }) => (
+    <div className="table-container">
+        <div className="table-header">
+            <h2>Stock</h2>
+            <div className="table-header-actions">
+                <div className="search-wrapper">
+                    <Search className="search-icon" size={18} />
+                    <input 
+                        type="text" 
+                        className="search-input"
+                        placeholder="Search by item name..." 
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                </div>
+                {/* */}
+                <Link to="/add-item">
+                    <button className="add-stock-btn">Add New Stock</button>
+                </Link>
+            </div>
+        </div>
 
-    <div className="full-width-card">
-      <table className="inventory-table">
-        <thead>
-          <tr><th>SKU</th><th>Name</th><th>Quantity</th><th>Location</th><th>Lot</th><th>Status</th></tr>
-        </thead>
-        <tbody>
-          {items.filter(item => 
-            (item.item_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-            (item.item_code?.toLowerCase().includes(searchTerm.toLowerCase()))
-          ).map(item => (
-            <tr key={item.id}>
-              <td><span className="sku-badge">{item.item_code}</span></td>
-              <td><strong>{item.item_name}</strong></td>
-              <td>{item.quantity} units</td>
-              <td>{item.location_id || 'N/A'}</td>
-              <td>{item.lot || 'N/A'}</td>
-              <td><span className={`status-pill ${item.quantity > 0 ? 'in-stock' : 'out-stock'}`}>{item.quantity > 0 ? 'In Stock' : 'Out Stock'}</span></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        <table>
+            <thead>
+                <tr>
+                    <th>Item Code</th>
+                    <th>Alternate Item Code</th>
+                    <th>Item Name</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Client</th>
+                </tr>
+            </thead>
+            <tbody>
+                {items
+                    .filter(item => (item.item_name || "").toLowerCase().includes(searchTerm.toLowerCase()))
+                    .map(item => (
+                        <tr key={item.item_code}>
+                            <td>{item.item_code}</td>
+                            {/* FIXED: Using altitem_code to match your DB data */}
+                            <td>{item.altitem_code}</td> 
+                            <td>{item.item_name}</td>
+                            <td>{item.type}</td>
+                            <td>
+                                <span className={`status-pill ${item.status === 'Available' ? 'in-stock' : 'out-stock'}`}>
+                                    {item.status}
+                                </span>
+                            </td>
+                            <td>{item.vendor}</td>
+                        </tr>
+                    ))}
+            </tbody>
+        </table>
     </div>
-  </>
 );
 
-// --- SUB-COMPONENT: Add Item Form Page ---
-const AddItemPage = ({ fetchItems }) => {
-  const navigate = useNavigate();
-  const [item, setItem] = useState({ item_code: '', item_name: '', quantity: 0, location_id: '', lot: '' });
+// --- SUB-COMPONENT: Sidebar ---
+const Sidebar = ({ setIsLoggedIn }) => {
+    const location = useLocation();
+    const [openMenus, setOpenMenus] = useState({ inbound: false, outbound: false });
+    const toggleMenu = (menu) => {
+        setOpenMenus(prev => ({ ...prev, [menu]: !prev[menu] }));
+    };
+    // Logic to move the active blue highlight
+    const isActive = (path) => location.pathname === path ? "active" : "";
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post("http://localhost:8080/api/items", item);
-      alert("Item Added!");
-      fetchItems();
-      navigate("/"); // Go back to table
-    } catch (err) { alert("Error saving item."); }
-  };
+    return (
+        <aside className="sidebar">
+            <div className="sidebar-top">
+                <div className="sidebar-brand">
+                    <Package size={28} color="#3b82f6" />
+                    <h2>WMS</h2>
+                </div>
+                
+                <nav className="sidebar-nav">
+                    <ul className="sidebar-menu">
+                        <li className={isActive("/")}>
+                            <Link to="/"><LayoutDashboard size={20} /> <span>Dashboard</span></Link>
+                        </li>
+                        <li className={`has-submenu ${openMenus.outbound ? 'open' : ''}`}>
+                            <div className="menu-item" onClick={() => toggleMenu('outbound')}>
+                                <ArrowUpRight size={20} /> <span>Outbound</span>
+                            </div>
+                            <ul className="submenu">
+                                <li className={isActive("/outbound/sales")}><Link to="/outbound/sales">Sales</Link></li>
+                                <li className={isActive("/outbound/transfer")}><Link to="/outbound/transfer">Transfer</Link></li>
+                                <li className={isActive("/outbound/return")}><Link to="/outbound/return">Return</Link></li>
+                            </ul>
+                        </li>
+                        <li className={`has-submenu ${openMenus.inbound ? 'open' : ''}`}>
+                            <div className="menu-item" onClick={() => toggleMenu('inbound')}>
+                                <ArrowDownLeft size={20} /> <span>Inbound</span>
+                            </div>
+                            <ul className="submenu">
+                                <li className={isActive("/inbound/purchase")}><Link to="/inbound/purchase">Purchase</Link></li>
+                                <li className={isActive("/inbound/customer-return")}><Link to="/inbound/customer-return">Customer Return</Link></li>
+                            </ul>
+                        </li>
+                        <li className={isActive("/stock")}>
+                            <Link to="/"><Database size={20} /> <span>Stock</span></Link>
+                        </li>
+                        <li className={isActive("/location")}>
+                            <Link to="/location"><MapPin size={20} /> <span>Location</span></Link>
+                        </li>
+                        <li className={isActive("/client")}>
+                            <Link to="/client"><Users size={20} /> <span>Client</span></Link>
+                        </li>
+                        <li className={isActive("/user")}>
+                            <Link to="/user"><UserCircle size={20} /> <span>User</span></Link>
+                        </li>
+                        <li className={isActive("/logs")}>
+                            <Link to="/logs"><History size={20} /> <span>Logs</span></Link>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
 
-  return (
-    <div className="add-item-container">
-      <h2>Add New Stock</h2>
-      <form onSubmit={handleSubmit} className="add-form">
-        <input type="text" placeholder="SKU / Item Code" onChange={e => setItem({...item, item_code: e.target.value})} required />
-        <input type="text" placeholder="Item Name" onChange={e => setItem({...item, item_name: e.target.value})} required />
-        <input type="number" placeholder="Quantity" onChange={e => setItem({...item, quantity: e.target.value})} />
-        <input type="text" placeholder="Location" onChange={e => setItem({...item, location_id: e.target.value})} />
-        <input type="text" placeholder="Lot" onChange={e => setItem({...item, lot: e.target.value})} />
-        <div className="form-buttons">
-          <button type="submit" className="save-btn">Save to Warehouse</button>
-          <p></p>
-          <button type="button" className="refresh-btn" onClick={() => navigate("/")}>Cancel</button>
-        </div>
-      </form>
-    </div>
-  );
+            <div className="sidebar-footer">
+                <button className="logout-btn-sidebar" onClick={() => setIsLoggedIn(false)}>
+                    <LogOut size={18} /> <span>Logout</span>
+                </button>
+            </div>
+        </aside>
+    );
 };
 
+// --- MAIN APP COMPONENT ---
 function App() {
-  const [formData, setFormData] = useState({ username: '', password: '' });
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [items, setItems] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+    const [formData, setFormData] = useState({ username: '', password: '' });
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [items, setItems] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
 
-  const handleAction = async (path) => {
-    try {
-      const res = await axios.post(`http://localhost:8080/api/${path}`, formData);
-      if (res.data.username || res.data === "Login Successful!") {
-        setIsLoggedIn(true);
-        fetchItems();
-      } else { alert(res.data); }
-    } catch (err) { alert("Backend Error: Is Spring Boot running?"); }
-  };
+    const handleAction = async (path) => {
+        try {
+            const res = await axios.post(`http://localhost:8080/api/${path}`, formData);
+            if (res.data.username || res.data === "Login Successful!") {
+                setIsLoggedIn(true);
+            } else { alert(res.data); }
+        } catch (err) { alert("Backend Error: Is Spring Boot running?"); }
+    };
 
-  const fetchItems = async () => {
-    try {
-      const res = await axios.get("http://localhost:8080/api/items");
-      setItems(res.data);
-    } catch (err) { console.error("Fetch error"); }
-  };
+    const fetchItems = async () => {
+        try {
+            const res = await axios.get("http://localhost:8080/api/items");
+            setItems(res.data);
+        } catch (err) { console.error("Fetch error"); }
+    };
 
-  if (!isLoggedIn) {
+    useEffect(() => {
+        if (isLoggedIn) fetchItems();
+    }, [isLoggedIn]);
+
+    if (!isLoggedIn) {
+        return (
+            <div className="login-container">
+                <div className="login-card">
+                    <h2>WMS Portal</h2>
+                    <input type="text" placeholder="Username" onChange={(e) => setFormData({...formData, username: e.target.value})} />
+                    <input type="password" placeholder="Password" onChange={(e) => setFormData({...formData, password: e.target.value})} />
+                    <button className="login-btn" onClick={() => handleAction('login')}>Login</button>
+                    <button className="reg-btn" onClick={() => handleAction('register')}>Register</button>
+                </div>
+            </div>
+        );
+    }
+
     return (
-      <div className="login-container">
-        <div className="login-card">
-          <h2>WMS Portal</h2>
-          <input type="text" placeholder="Username" onChange={(e) => setFormData({...formData, username: e.target.value})} />
-          <input type="password" placeholder="Password" onChange={(e) => setFormData({...formData, password: e.target.value})} />
-          <button className="login-btn" onClick={() => handleAction('login')}>Login</button>
-          <button className="reg-btn" onClick={() => handleAction('register')}>Register</button>
-        </div>
-      </div>
+        <Router>
+            <div className="main-layout">
+                <Sidebar setIsLoggedIn={setIsLoggedIn} />
+
+                {/* Content area now has proper padding to avoid sidebar overlap */}
+                <main className="content-area">
+                    <Routes>
+                        <Route path="/" element={<InventoryTable items={items} searchTerm={searchTerm} setSearchTerm={setSearchTerm} />} />
+                        <Route path="/add-item" element={<ItemRegForm fetchItems={fetchItems} />} /> 
+                    </Routes>
+                </main>
+            </div>
+        </Router>
     );
-  }
-
-  return (
-    <Router>
-      <div className="main-layout">
-        <aside className="sidebar">
-          <div className="sidebar-brand"><Package size={28} color="#3b82f6" /><h2>Khai WMS</h2></div>
-          <ul className="sidebar-menu">
-            <li className="active"><Link to="/"><LayoutDashboard size={20} /> <span>Inventory</span></Link></li>
-            <li><ShoppingCart size={20} /> <span>Orders</span></li>
-          </ul>
-          <button className="logout-btn-sidebar" onClick={() => setIsLoggedIn(false)}><LogOut size={18} /> Logout</button>
-        </aside>
-
-        <main className="content-area">
-          <Routes>
-            <Route path="/" element={<InventoryTable items={items} searchTerm={searchTerm} setSearchTerm={setSearchTerm} fetchItems={fetchItems} />} />
-            <Route path="/add-item" element={<AddItemPage fetchItems={fetchItems} />} />
-          </Routes>
-        </main>
-      </div>
-    </Router>
-  );
 }
 
 export default App;

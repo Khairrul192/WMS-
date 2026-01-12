@@ -1,6 +1,6 @@
 package com.khairul.WMS.controller;
 
-import com.khairul.WMS.model.Item;
+import com.khairul.WMS.model.itemmaster; 
 import com.khairul.WMS.repository.ItemRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -8,24 +8,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/items")
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 public class ItemCont {
 
     @Autowired
-    private ItemRepo itemRepository;
+    private ItemRepo itemRepo;
+
+    @PostMapping // This MUST be here to accept the React 'axios.post' call
+    public itemmaster saveItem(@RequestBody itemmaster item) {
+        return itemRepo.save(item);
+    }
 
     @GetMapping
-    public List<Item> getAllItems() {
-        return itemRepository.findAll();
-    }
-
-    @PostMapping
-    public Item addItem(@RequestBody Item item) {
-        return itemRepository.save(item);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteItem(@PathVariable Long id) {
-        itemRepository.deleteById(id);
+    public List<itemmaster> getAllItems() {
+        return itemRepo.findAll();
     }
 }
