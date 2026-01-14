@@ -1,7 +1,9 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
-import ItemRegForm from './ItemRegForm'; 
+import ItemRegForm from './ItemRegForm'; //file to register item
+import VendorList from './VendorList'; // view list vendor
+import VendorRegForm from './VendorRegForm'; //register vendor
 import axios from 'axios';
 import { 
   LayoutDashboard, 
@@ -116,14 +118,14 @@ const Sidebar = ({ setIsLoggedIn }) => {
                                 <li className={isActive("/inbound/customer-return")}><Link to="/inbound/customer-return">Customer Return</Link></li>
                             </ul>
                         </li>
-                        <li className={isActive("/stock")}>
+                        <li className={isActive("/")}>
                             <Link to="/"><Database size={20} /> <span>Stock</span></Link>
                         </li>
                         <li className={isActive("/location")}>
                             <Link to="/location"><MapPin size={20} /> <span>Location</span></Link>
                         </li>
-                        <li className={isActive("/client")}>
-                            <Link to="/client"><Users size={20} /> <span>Client</span></Link>
+                        <li className={isActive("/vendor")}>
+                            <Link to="/vendor"><Users size={20} /> <span>Client</span></Link>
                         </li>
                         <li className={isActive("/user")}>
                             <Link to="/user"><UserCircle size={20} /> <span>User</span></Link>
@@ -194,6 +196,8 @@ function App() {
                 <main className="content-area">
                     <Routes>
                         <Route path="/" element={<InventoryTable items={items} searchTerm={searchTerm} setSearchTerm={setSearchTerm} />} />
+                        <Route path="/vendor" element={<VendorList />} />
+                        <Route path="/add-vendor" element={<VendorRegForm />} />
                         <Route path="/add-item" element={<ItemRegForm fetchItems={fetchItems} />} /> 
                     </Routes>
                 </main>

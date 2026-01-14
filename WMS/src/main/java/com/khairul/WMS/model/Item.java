@@ -9,7 +9,6 @@ public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
     private String itemCode; 
     private String AltitemCode;
     private int quantity;

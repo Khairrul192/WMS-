@@ -1,131 +1,97 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import './itemregister.css'; 
 
-const ItemRegForm = ({ fetchItems }) => {
+const ItemRegForm = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    item_code: '', 
-    item_name: '', 
-    AltitemCode: '',
-    description: '',
-    status: '', 
-    expiration: '', 
-    type: '',
-    unitprice: '',
-    weight: '',
-    length: '',
-    width: '',
-    height: '',
-    vendor: ''
+    vendor: '', item_code: '', AltitemCode: '', item_name: '', 
+    description: '', status: 'Available', type: 'EA', 
+    unitprice: '', weight: '', length: '', height: '', width: ''
   });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post("http://localhost:8080/api/items", formData);
-      alert("Item Registered Successfully!");
-      fetchItems();
-      navigate("/");
-    } catch (err) {
-      console.error(err);
-      alert("Error saving item.");
-    }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleChange = (e) => {
-  const { name, value, type } = e.target;
-  setFormData({...formData, [name]: type === 'number' ? parseInt(value, 10) || 0 : value});
-};
-
   return (
-    <div className="form-container">
-      <h2 className="form-title">Add New Stock</h2>
-      <form onSubmit={handleSubmit} className="aligned-form">
-        
-        <div className="form-group">
-          <label>Item Code :</label>
-          <input name="item_code" type="text" value={formData.item_code} onChange={handleChange} required />
-        </div>
+    <div className="form-page-container">
+      <div className="registration-card">
+        <h2 style={{ marginBottom: '30px', color: '#1e293b' }}>Add New Stock</h2>
+        <form className="grid-precise-flow">
+          
+          {/* Line 1: Vendor (Full Width) */}
+          <div className="form-field span-3">
+            <label>Vendor :</label>
+            <input name="vendor" type="text" onChange={handleChange} placeholder="Enter vendor name..." />
+          </div>
 
-        <div className="form-group">
-          <label>Item Name :</label>
-          <input name="item_name" type="text" value={formData.item_name} onChange={handleChange} required />
-        </div>
+          {/* Line 2: Item Code, Alternate Item Code, Item Name */}
+          <div className="form-field">
+            <label>Item Code :</label>
+            <input name="item_code" type="text" onChange={handleChange} />
+          </div>
+          <div className="form-field">
+            <label>Alternate Item Code :</label>
+            <input name="AltitemCode" type="text" onChange={handleChange} />
+          </div>
+          <div className="form-field">
+            <label>Item Name :</label>
+            <input name="item_name" type="text" onChange={handleChange} />
+          </div>
 
-        <div className="form-group">
-          <label>Alternate Item Code :</label>
-          <input name="AltitemCode" type="text" value={formData.AltitemCode} onChange={handleChange} />
-        </div>
+          {/* Line 3: Description, Status */}
+          <div className="form-field span-2">
+            <label>Description :</label>
+            <input name="description" type="text" onChange={handleChange} />
+          </div>
+          <div className="form-field">
+            <label>Status :</label>
+            <select name="status" value={formData.status} onChange={handleChange}>
+              <option value="Available">Available</option>
+              <option value="Unavailable">Unavailable</option>
+            </select>
+          </div>
 
-        <div className="form-group">
-          <label>Description :</label>
-          <input name="description" type="text" value={formData.description} onChange={handleChange} required />
-        </div>
+          {/* Line 4: Type, Unit Price, Weight */}
+          <div className="form-field">
+            <label>Type :</label>
+            <select name="type" value={formData.type} onChange={handleChange}>
+              <option value="EA">EA - EACH</option>
+              <option value="PC">PC - PACKS</option>
+            </select>
+          </div>
+          <div className="form-field">
+            <label>Unit Price (RM):</label>
+            <input name="unitprice" type="number" onChange={handleChange} />
+          </div>
+          <div className="form-field">
+            <label>Weight (KG):</label>
+            <input name="weight" type="number" onChange={handleChange} />
+          </div>
 
-        <div className="form-group">
-          <label>Status :</label>
-          <select name="status" value={formData.status} onChange={handleChange}>
-            <option value="" disabled>Status</option>
-            <option value="Available">Available</option>
-            <option value="Unavailable">Unavailable</option>
-          </select>
-        </div>
+          {/* Line 5: Length, Height, Width */}
+          <div className="form-field">
+            <label>Length (CM):</label>
+            <input name="length" type="number" onChange={handleChange} />
+          </div>
+          <div className="form-field">
+            <label>Height (CM):</label>
+            <input name="height" type="number" onChange={handleChange} />
+          </div>
+          <div className="form-field">
+            <label>Width (CM):</label>
+            <input name="width" type="number" onChange={handleChange} />
+          </div>
 
-        <div className="form-group">
-          <label>Expiration :</label>
-          <select name="expiration" value={formData.expiration} onChange={handleChange}>
-            <option value="" disabled>Expiration</option>
-            <option value="No">No</option>
-            <option value="Yes">Yes</option>
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label>Type :</label>
-          <select name="type" value={formData.type} onChange={handleChange}>
-            <option value="" disabled>Type</option>
-            <option value="EA">EA - EACH</option>
-            <option value="PC">PC - PACKS</option>
-            <option value="CS">CS - CASE</option>
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label>Unit Price (RM):</label>
-          <input name="unitprice" type="number" value={formData.unitprice} onChange={handleChange} />
-        </div>
-
-        <div className="form-group">
-          <label>Weight (KG) :</label>
-          <input name="weight" type="number" value={formData.weight} onChange={handleChange} />
-        </div>
-
-        <div className="form-group">
-          <label>Width (CM):</label>
-          <input name="width" type="number" value={formData.width} onChange={handleChange} />
-        </div>
-
-        <div className="form-group">
-          <label>Length (CM):</label>
-          <input name="length" type="number" value={formData.length} onChange={handleChange} />
-        </div>
-
-        <div className="form-group">
-          <label>Height (CM):</label>
-          <input name="height" type="number" value={formData.height} onChange={handleChange} />
-        </div>
-
-        <div className="form-group">
-          <label>Vendor :</label>
-          <input name="vendor" type="text" value={formData.vendor} onChange={handleChange} />
-        </div>
-
-        <div className="form-actions">
-          <button type="submit" className="formsave-btn">Save</button>
-          <button type="button" className="formcancel-btn" onClick={() => navigate("/")}>Cancel</button>
-        </div>
-      </form>
+          {/* Actions - Pinned to bottom right */}
+          <div className="form-button-group">
+            <button type="button" className="btn-cancel" onClick={() => navigate("/")}>Cancel</button>
+            <button type="submit" className="btn-save">Save Item</button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

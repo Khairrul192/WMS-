@@ -1,0 +1,88 @@
+/* Container to center everything in the content area */
+.form-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 40px); /* Adjust for padding */
+    padding: 20px;
+}
+
+/* The card holding the form */
+.registration-card {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 500px; /* Limits width so it stays centered and neat */
+}
+
+.registration-card h2 {
+    margin-bottom: 25px;
+    color: #1e293b;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* Individual field spacing */
+.form-field {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-field label {
+    font-weight: 600;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.form-field input, 
+.form-field select, 
+.form-field textarea {
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-field input:focus, 
+.form-field select:focus {
+    border-color: #3b82f6;
+}
+
+/* Button layout */
+.form-button-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.btn-save {
+    flex: 2;
+    background-color: #3b82f6;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-cancel {
+    flex: 1;
+    background-color: #f1f5f9;
+    color: #64748b;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-save:hover { background-color: #2563eb; }
+.btn-cancel:hover { background-color: #e2e8f0; }
